@@ -25,7 +25,11 @@ module EasyTable
       end
 
       def td(record)
-        html = capture { @block.call(record, self) }
+	if @block.present?
+	  html = capture { @block.call(record, self) }
+	else
+	  html = record.send(@title).to_s
+        end
         concat(tag(:td, @opts))
         concat(html)
         concat('</td>')
