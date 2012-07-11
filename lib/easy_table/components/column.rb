@@ -30,9 +30,9 @@ module EasyTable
         else
           html = record.send(@title).to_s
         end
-        concat(tag(:td, @opts))
-        concat(html)
-        concat('</td>')
+        concat(tag(:td, @opts) do
+          concat(tag(:span, html)) # FIXME sth wrong
+        end)
       end
 
       def class=(klass)

@@ -45,7 +45,7 @@ module EasyTable
     end
 
     def span(title = nil, opts = {}, &block)
-      spans << Span.new(title, opts, @template, block)
+      spans << EasyTable::Components::Span.new(title, opts, @template, block)
     end
 
     def spans
