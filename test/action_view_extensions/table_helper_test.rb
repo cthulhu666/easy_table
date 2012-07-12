@@ -9,10 +9,14 @@ class TableHelperTest < ActionView::TestCase
   context "a table" do
     setup do
       @collection = ['foo', 'bar', 'buzz']
-      concat(table_for(@collection) do |t|
+      concat(table_for(@collection, class: 'easy') do |t|
         t.column :downcase
         t.column(:upcase) { |t| t.upcase }
       end)
+    end
+
+    should "have 'easy' class" do
+      assert_select 'table.easy'
     end
 
     should "have 3 rows" do
