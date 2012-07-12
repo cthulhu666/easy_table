@@ -3,9 +3,9 @@ require File.expand_path('../lib/easy_table/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Jakub Głuszecki"]
-  gem.email         = ["jakub.gluszecki@expander.pl"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.email         = ["jakub.gluszecki@gmail.com"]
+  gem.description   = "HTML tables made easy (in Rails 3)"
+  gem.summary       = "HTML tables made easy (in Rails 3)"
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
