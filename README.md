@@ -71,6 +71,38 @@ Assuming `@people` is a collection consisting of two records:
  * person with id = 1, John Doe
  * person with id = 2, Alice Cooper
 
+### Example with more complex table structure
+
+```haml
+= table_for(@people) do |t|
+  - t.span 'personal data' do |s|
+    - s.column :name
+    - s.colunm :surname
+  - t.span 'contact data' do |s|
+    - s.column :email
+    - s.column :phone
+```
+
+This produces:
+
+```haml
+%table
+  %thead
+    %tr
+      %th{colspan: 2, scope: 'col'} personal data
+      %th{colspan: 2, scope: 'col'} contact data
+    %tr
+      %th name
+      %th surname
+      %th email
+      %th phone
+  %tbody
+    %tr#person-1
+      %td John
+      %td Doe
+      %td john.doe@gmail.com
+      %td 123456789    
+```
 
 ## Contributing
 
