@@ -18,7 +18,32 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+All examples assume that You are using Haml. Please, use Haml !
+
+### Simplest example
+
+```haml
+= table_for(@people) do |t|
+  - t.column :name
+  - t.column :surname
+```
+
+This produces:
+
+```haml
+%table
+  %thead
+    %tr
+      %th name
+      %th surname
+  %tbody
+    %tr{id: 'person-1'}
+      %td John
+      %td Doe
+```
+
+Assuming `@people` is a collection consisting of one record, person with id = 1, John Doe
+
 
 ## Contributing
 
