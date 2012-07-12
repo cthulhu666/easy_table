@@ -34,10 +34,10 @@ class TableHelperTest < ActionView::TestCase
 
   context "a complex table" do
     setup do
-      person = Struct.new(:name, :surname, :email, :phone)
+      Person = Struct.new(:id, :name, :surname, :email, :phone) unless defined?(Person)
       @collection = []
-      @collection << person.new("John", "Doe", "jdoe@gmail.com", "500600700")
-      @collection << person.new("Barack", "Obama", "bobama@polskieobozy.com", "501601701")
+      @collection << Person.new(1, "John", "Doe", "jdoe@gmail.com", "500600700")
+      @collection << Person.new(2, "Barack", "Obama", "bobama@polskieobozy.com", "501601701")
       concat(table_for(@collection) do |t|
         t.span(:names) do |s|
           s.column :name, class: 'name', header_class: 'name_head'
@@ -48,6 +48,11 @@ class TableHelperTest < ActionView::TestCase
           s.column :phone
         end
       end)
+    end
+
+    should "have rows with proper id attributes" do
+      assert_select 'table tbody tr#tablehelpertest-person-1'
+      assert_select 'table tbody tr#tablehelpertest-person-2'
     end
 
     should "have 2 th-s in thead's first row'" do

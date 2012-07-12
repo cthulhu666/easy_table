@@ -55,8 +55,8 @@ module EasyTable
     private
 
     def tr_opts(record)
-      {}
-      # TODO {id: "#{record.class.name.downcase}_#{record.id}"}
+      record.respond_to?(:id) ?
+          {id: "#{record.class.name.parameterize}-#{record.id}"} : {}
     end
 
     def concat(tag)
