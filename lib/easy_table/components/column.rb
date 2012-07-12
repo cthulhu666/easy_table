@@ -21,7 +21,7 @@ module EasyTable
       end
 
       def head
-        concat content_tag(:th, @title, @header_opts)
+        concat content_tag(:th, title, @header_opts)
       end
 
       def td(record)
@@ -30,11 +30,10 @@ module EasyTable
         else
           html = record.send(@title).to_s
         end
-        concat(tag(:td, @opts) do
-          concat(tag(:span, html)) # FIXME sth wrong
-        end)
+        concat(content_tag(:td, html, html_opts(record)))
       end
 
+      # TODO remove this, use lambda instead
       def class=(klass)
         @opts[:class] = [klass, @opts[:class]].join ' '
       end
@@ -44,6 +43,23 @@ module EasyTable
       def concat(tag)
         @template.safe_concat(tag) unless tag.nil?
         ""
+      end
+
+      def title
+        @title
+      end
+
+      def html_opts(record)
+        @opts.inject({}) do |h, e|
+          k, v = *e
+          h[k] = case v
+                   when Proc
+                     v.call(record)
+                   else
+                     v
+                 end
+          h
+        end
       end
     end
   end

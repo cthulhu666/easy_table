@@ -37,13 +37,14 @@ class TableHelperTest < ActionView::TestCase
       person = Struct.new(:name, :surname, :email, :phone)
       @collection = []
       @collection << person.new("John", "Doe", "jdoe@gmail.com", "500600700")
+      @collection << person.new("Barack", "Obama", "bobama@polskieobozy.com", "501601701")
       concat(table_for(@collection) do |t|
         t.span(:names) do |s|
-          s.column :name
-          s.column :surname
+          s.column :name, class: 'name', header_class: 'name_head'
+          s.column(:surname) { |person| content_tag(:span, person.surname.capitalize) }
         end
         t.span(:contact_data) do |s|
-          s.column :email
+          s.column :email, class: lambda { |person| person.email =~ /gmail/ ? 'gmail' : '' }
           s.column :phone
         end
       end)
@@ -60,9 +61,28 @@ class TableHelperTest < ActionView::TestCase
     end
 
     should "have proper body content" do
-      row = css_select 'table tbody tr td'
-      assert_equal 'John', row[0]
-      assert_equal 'Doe', row[1]
+      assert_select 'table tbody tr:first-child td:first-child', {count: 1, text: 'John'}
+      assert_select 'table tbody tr:first-child td:nth-child(2) span', {count: 1, text: 'Doe'}
+    end
+
+    should "have proper td class in name column" do
+      td = css_select('table tbody tr:first-child td:first-child').first
+      assert_equal 'name', td.attributes['class']
+    end
+
+    should "have proper th class in name column" do
+      td = css_select('table thead tr:nth-child(2) th:first-child').first
+      assert_equal 'name_head', td.attributes['class']
+    end
+
+    should "have proper td class in first row in email column" do
+      td = css_select('table tbody tr:nth-child(1) td:nth-child(3)').first
+      assert_equal 'gmail', td.attributes['class']
+    end
+
+    should "have proper td class in second row in email column" do
+      td = css_select('table tbody tr:nth-child(2) td:nth-child(3)').first
+      assert_equal '', td.attributes['class']
     end
   end
 end
