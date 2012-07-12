@@ -33,11 +33,6 @@ module EasyTable
         concat(content_tag(:td, html, html_opts(record)))
       end
 
-      # TODO remove this, use lambda instead
-      def class=(klass)
-        @opts[:class] = [klass, @opts[:class]].join ' '
-      end
-
       private
 
       def concat(tag)

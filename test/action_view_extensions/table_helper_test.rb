@@ -44,7 +44,7 @@ class TableHelperTest < ActionView::TestCase
           s.column(:surname) { |person| content_tag(:span, person.surname.capitalize) }
         end
         t.span(:contact_data) do |s|
-          s.column :email, class: lambda { |person| person.email =~ /gmail/ ? 'gmail' : '' }
+          s.column :email, class: lambda { |person| ['foo', 'bar', person.email =~ /gmail/ && 'gmail'].compact }
           s.column :phone
         end
       end)
@@ -77,12 +77,12 @@ class TableHelperTest < ActionView::TestCase
 
     should "have proper td class in first row in email column" do
       td = css_select('table tbody tr:nth-child(1) td:nth-child(3)').first
-      assert_equal 'gmail', td.attributes['class']
+      assert_equal 'foo bar gmail', td.attributes['class']
     end
 
     should "have proper td class in second row in email column" do
       td = css_select('table tbody tr:nth-child(2) td:nth-child(3)').first
-      assert_equal '', td.attributes['class']
+      assert_equal 'foo bar', td.attributes['class']
     end
   end
 end
