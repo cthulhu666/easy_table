@@ -23,23 +23,9 @@ end
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'easy_table'
 
-Dir["#{File.dirname(__FILE__)}/support/*.rb"].each do |file|
-  require file
-end
 I18n.default_locale = :en
-
-ActionDispatch::Assertions::NO_STRIP << "label"
 
 class ActionView::TestCase
   include EasyTable::ActionViewExtensions::TableHelper
 
-  setup :set_controller
-
-  def set_controller
-    @controller = MockController.new
-  end
-
-  def protect_against_forgery?
-    false
-  end
 end
