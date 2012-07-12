@@ -33,12 +33,43 @@ This produces:
       %th name
       %th surname
   %tbody
-    %tr{id: 'person-1'}
+    %tr#person-1
       %td John
       %td Doe
 ```
 
 Assuming `@people` is a collection consisting of one record, person with id = 1, John Doe
+
+### Simple example
+
+```haml
+= table_for(@people, class: 'people') do |t|
+  - t.column :name, class: 'name' do |person|
+    - person.name.downcase 
+  - t.column :surname, class: lambda { |person| ['surname', person.surname.length > 5 && 'long'].compact } do |person|
+    - person.surname.upcase
+```
+
+This produces:
+
+```haml
+%table.people
+  %thead
+    %tr
+      %th name
+      %th surname
+  %tbody
+    %tr#person-1
+      %td.name john
+      %td.surname DOE
+    %tr#person-2
+      %td.name alice
+      %td.surname.long COOPER
+```
+
+Assuming `@people` is a collection consisting of two records:
+ * person with id = 1, John Doe
+ * person with id = 2, Alice Cooper
 
 
 ## Contributing
