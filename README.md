@@ -1,6 +1,8 @@
 # EasyTable
 
-TODO: Write a gem description
+EasyTable provides a helper for building HTML tables in Rails applications.
+
+It is inspired by simple_form gem: https://github.com/plataformatec/simple_form
 
 ## Installation
 
