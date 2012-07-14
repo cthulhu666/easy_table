@@ -1,6 +1,8 @@
 module EasyTable
   class TableBuilder
+
     include EasyTable::Components::Columns
+    include EasyTable::Components::Spans
 
     delegate :tag, :content_tag, :to => :@template
 
@@ -8,35 +10,19 @@ module EasyTable
       @collection = collection
       @options = options
       @template = template
+      @node = Tree::TreeNode.new('root')
     end
 
     def build
       content_tag(:table, @options) do
         concat(content_tag(:thead) do
-          concat(content_tag(:tr) do
-            spans.each do |span|
-              span.head
-            end
-            columns.each do |col|
-              col.head
-            end
-          end)
-          if spans.any?
-            concat(content_tag(:tr) do
-              spans.each do |span|
-                span.subhead
-              end
-            end)
-          end
+          thead
         end)
         concat(content_tag(:tbody) do
           @collection.each do |record|
             concat(content_tag(:tr, tr_opts(record)) do
-              spans.each do |span|
-                span.td(record)
-              end
-              columns.each do |col|
-                col.dup.td(record)
+              node.each_leaf do |leaf|
+                leaf.content.td(record)
               end
             end)
           end
@@ -44,15 +30,25 @@ module EasyTable
       end
     end
 
-    def span(title = nil, opts = {}, &block)
-      spans << EasyTable::Components::Span.new(title, opts, @template, block)
-    end
-
-    def spans
-      @spans ||= []
-    end
-
     private
+
+    def thead
+      rows = node.inject([]) do |arr, n|
+        arr[n.level] ||= []
+        arr[n.level] << n
+        arr
+      end
+      rows.shift
+      rows.each do |row|
+        concat(
+            content_tag(:tr) do
+              row.map { |node| node.content }.each do |span_or_column|
+                span_or_column.head
+              end
+            end
+        )
+      end
+    end
 
     def tr_opts(record)
       record.respond_to?(:id) ?

@@ -1,10 +1,10 @@
 module EasyTable
   module Components
-    module Columns
-      def column(title, opts = {}, &block)
+    module Spans
+      def span(title, opts = {}, &block)
         child = node << Tree::TreeNode.new(title)
-        column = Column.new(child, title, opts, @template, block)
-        child.content = column
+        span = Span.new(child, title, opts, @template, block)
+        child.content = span
       end
 
       private

@@ -94,4 +94,42 @@ class TableHelperTest < ActionView::TestCase
       assert_equal 'foo bar', td.attributes['class']
     end
   end
+
+  context "table with nested spans" do
+    setup do
+      @collection = []
+      concat(
+          table_for(@collection) do |t|
+            t.span :span1 do |s1|
+              s1.span :span2 do |s2|
+                s2.column :col1
+                s2.column :col2
+              end
+              s1.span :span3 do |s3|
+                s3.column :col3
+                s3.column :col4
+              end
+            end
+            t.span :span4 do |s4|
+              s4.column :col5
+              s4.column :col6
+            end
+            t.column :col7, header_rowspan: 3
+          end
+      )
+    end
+
+    should "have 3 rows in thead" do
+      assert_select 'table thead tr', 3
+    end
+
+    should "have rowspan=3 in last th of first tr" do
+      th = css_select('table thead tr:first-child th:last-child').first
+      assert_equal '3', th.attributes['rowspan']
+    end
+
+    should "have 11 th elements in thead" do
+      assert_select 'table thead th', count: 11
+    end
+  end
 end

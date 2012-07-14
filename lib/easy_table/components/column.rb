@@ -4,8 +4,8 @@ module EasyTable
 
       delegate :tag, :capture, :content_tag, :to => :@template
 
-      def initialize(title, opts, template, block)
-        @title, @template, @block, @opts = title, template, block, opts
+      def initialize(node, title, opts, template, block)
+        @node, @title, @template, @block, @opts = node, title, template, block, opts
         header_opts = @opts.select { |k, v| k =~ /^header_.*/ }
         header_opts.each { |k, v| @opts.delete(k) }
         @header_opts = header_opts.inject({}) do |h, e|
@@ -13,11 +13,6 @@ module EasyTable
           h[k[7..-1]] = v
           h
         end
-      end
-
-      def initialize_copy(source)
-        super
-        @opts = @opts.dup
       end
 
       def head
