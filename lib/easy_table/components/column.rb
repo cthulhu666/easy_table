@@ -4,8 +4,8 @@ module EasyTable
 
       delegate :tag, :capture, :content_tag, :to => :@template
 
-      def initialize(node, title, opts, template, block)
-        @node, @title, @template, @block, @opts = node, title, template, block, opts
+      def initialize(node, title, label, opts, template, block)
+        @node, @title, @label, @template, @block, @opts = node, title, label, template, block, opts
         header_opts = @opts.select { |k, v| k =~ /^header_.*/ }
         header_opts.each { |k, v| @opts.delete(k) }
         @header_opts = header_opts.inject({}) do |h, e|
@@ -16,7 +16,7 @@ module EasyTable
       end
 
       def head
-        concat content_tag(:th, title, @header_opts)
+        concat content_tag(:th, label, @header_opts)
       end
 
       def td(record)
@@ -30,13 +30,13 @@ module EasyTable
 
       private
 
+      def label
+        @label || @title
+      end
+
       def concat(tag)
         @template.safe_concat(tag) unless tag.nil?
         ""
-      end
-
-      def title
-        @title
       end
 
       def html_opts(record)

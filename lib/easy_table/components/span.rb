@@ -4,8 +4,8 @@ module EasyTable
       include Columns
       include Spans
 
-      def initialize(node, title, html_opts, template, block)
-        @node, @title, @template, @block, @html_opts = node, title, template, block, html_opts
+      def initialize(node, title, label, html_opts, template, block)
+        @node, @title, @label, @template, @block, @html_opts = node, title, label, template, block, html_opts
         block.call(self)
       end
 
@@ -13,7 +13,7 @@ module EasyTable
 
       def head
         opts = @html_opts.merge(colspan: colspan, scope: 'col')
-        concat content_tag(:th, @title, opts)
+        concat content_tag(:th, label, opts)
       end
 
       def td(record)
@@ -23,6 +23,10 @@ module EasyTable
       end
 
       private
+
+      def label
+        @label || @title
+      end
 
       def colspan
         node.inject(0) { |count, n| count += 1 if n.is_leaf?; count }
