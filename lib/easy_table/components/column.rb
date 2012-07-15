@@ -1,6 +1,7 @@
 module EasyTable
   module Components
     class Column
+      include Base
 
       delegate :tag, :capture, :content_tag, :to => :@template
 
@@ -31,7 +32,7 @@ module EasyTable
       private
 
       def label
-        @label || @title
+        @label || translate(@title)
       end
 
       def concat(tag)

@@ -1,6 +1,7 @@
 module EasyTable
   module Components
     class Span
+      include Base
       include Columns
       include Spans
 
@@ -25,7 +26,7 @@ module EasyTable
       private
 
       def label
-        @label || @title
+        @label || translate(@title)
       end
 
       def colspan
