@@ -51,8 +51,11 @@ module EasyTable
     end
 
     def tr_opts(record)
-      record.respond_to?(:id) ?
-          {id: "#{record.class.name.parameterize}-#{record.id}"} : {}
+      id =  "#{record.class.model_name.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
+      id ||=  "#{record.class.name.parameterize}-#{record.id}" if record.respond_to?(:id)
+
+      id.present? ?
+          {id: id} : {}
     end
 
     def concat(tag)
