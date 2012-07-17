@@ -1,13 +1,10 @@
 module EasyTable
   module Components
     module Spans
-      def span(title, label_or_opts = nil, opts = {}, &block)
-        if label_or_opts.is_a?(Hash) && label_or_opts.extractable_options?
-          label, opts = nil, label_or_opts
-        else
-          label, opts = label_or_opts, opts
-        end
-        child = node << Tree::TreeNode.new(title)
+      def span(*args, &block)
+        opts = options_from_hash(args)
+        title, label = *args
+        child = node << Tree::TreeNode.new(title || generate_node_name)
         span = Span.new(child, title, label, opts, @template, block)
         child.content = span
       end
@@ -16,6 +13,14 @@ module EasyTable
 
       def node
         @node
+      end
+
+      def options_from_hash(args)
+        args.last.is_a?(Hash) ? args.pop : {}
+      end
+
+      def generate_node_name
+        "#{node.name}-span-#{node.size}"
       end
     end
   end
