@@ -106,6 +106,43 @@ This produces:
       %td 123456789    
 ```
 
+### I18n and column headers
+
+```yaml
+en:
+  easy_table:
+    person: # this is matched based on controller_name.singularize
+      name: 'Name'
+      surname: 'Surname'
+```
+
+With following form definition
+
+```haml
+= table_for(@people) do |t|
+  - t.column :name
+  - t.column :surname
+```
+
+It will use 'Name' and 'Surname' as column header labels:
+
+```haml
+%table
+  %thead
+    %tr
+      %th Name
+      %th Surname
+```
+
+You can also explicitly set column header passing it as a second argument to ```column``` and ```span``` methods:
+
+```haml
+= table_for(@people) do |t|
+  - t.column :name, 'Name'
+  - t.column :surname, 'Surname'
+```
+
+
 ## Contributing
 
 1. Fork it
