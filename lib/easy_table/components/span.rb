@@ -26,6 +26,7 @@ module EasyTable
       private
 
       def label
+        return nil if @title.nil?
         @label || translate(@title)
       end
 
