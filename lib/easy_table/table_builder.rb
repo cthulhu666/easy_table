@@ -9,6 +9,14 @@ module EasyTable
     def initialize(collection, template, options)
       @collection = collection
       @options = options
+      tr_opts = @options.select { |k, v| k =~ /^tr_.*/ }
+      tr_opts.each { |k, v| @options.delete(k) }
+      @tr_opts = tr_opts.inject({}) do |h, e|
+        k, v = *e
+        h[k[3..-1]] = v
+        h
+      end
+
       @template = template
       @node = Tree::TreeNode.new('root')
     end
@@ -51,11 +59,22 @@ module EasyTable
     end
 
     def tr_opts(record)
+      tr_opts = @tr_opts.inject({}) do |h, e|
+        k, v = *e
+        h[k] = case v
+                 when Proc
+                   v.call(record)
+                 else
+                   v
+               end
+        h
+      end
+
       id =  "#{record.class.model_name.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
       id ||=  "#{record.class.name.parameterize}-#{record.id}" if record.respond_to?(:id)
 
       id.present? ?
-          {id: id} : {}
+          tr_opts.merge({id: id}) : tr_opts
     end
 
     def concat(tag)
