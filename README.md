@@ -8,7 +8,7 @@ It is inspired by simple_form gem: https://github.com/plataformatec/simple_form
 
 Add this line to your application's Gemfile:
 
-    gem "easy_table", "~> 0.0.4"
+    gem "easy_table"
 
 And then execute:
 
