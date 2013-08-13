@@ -1,5 +1,7 @@
 # EasyTable
 
+[![Build Status](https://travis-ci.org/cthulhu666/easy_table.png?branch=master)](https://travis-ci.org/cthulhu666/easy_table)
+
 EasyTable provides a helper for building HTML tables in Rails applications.
 
 It is inspired by simple_form gem: https://github.com/plataformatec/simple_form
