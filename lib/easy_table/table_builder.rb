@@ -70,8 +70,8 @@ module EasyTable
         h
       end
 
-      id =  "#{record.class.model_name.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
-      id ||=  "#{record.class.name.parameterize}-#{record.id}" if record.respond_to?(:id)
+      id =  "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
+      id ||=  "#{record.class.name.to_s.parameterize}-#{record.id}" if record.respond_to?(:id)
 
       id.present? ?
           tr_opts.merge({id: id}) : tr_opts
