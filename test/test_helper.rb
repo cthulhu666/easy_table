@@ -2,17 +2,16 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'test/unit'
-require 'mocha'
-require 'shoulda-context'
+require 'mocha/setup'
 
 require 'active_model'
 require 'action_controller'
 require 'action_view'
 require 'action_view/template'
 
-# Rails 3.0.4 is missing this "deprecation" require.
-require 'active_support/core_ext/module/deprecation'
 require 'action_view/test_case'
+
+require 'shoulda-context'
 
 module Rails
   def self.env
