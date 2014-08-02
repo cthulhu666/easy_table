@@ -1,6 +1,7 @@
 # EasyTable
 
 [![Build Status](https://travis-ci.org/cthulhu666/easy_table.png?branch=master)](https://travis-ci.org/cthulhu666/easy_table)
+[![endorse](https://api.coderwall.com/cthulhu666/endorsecount.png)](https://coderwall.com/cthulhu666)
 
 EasyTable provides a helper for building HTML tables in Rails applications.
 
