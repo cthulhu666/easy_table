@@ -9,8 +9,8 @@ module EasyTable
     def initialize(collection, template, options)
       @collection = collection
       @options = options
-      tr_opts = @options.select { |k, v| k =~ /^tr_.*/ }
-      tr_opts.each { |k, v| @options.delete(k) }
+      tr_opts = @options.select { |k, _v| k =~ /^tr_.*/ }
+      tr_opts.each { |k, _v| @options.delete(k) }
       @tr_opts = tr_opts.inject({}) do |h, e|
         k, v = *e
         h[k[3..-1]] = v

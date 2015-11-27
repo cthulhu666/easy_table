@@ -11,7 +11,7 @@ class TableHelperTest < ActionView::TestCase
       @collection = ['foo', 'bar', 'buzz']
       concat(table_for(@collection, class: 'easy') do |t|
         t.column :downcase
-        t.column(:upcase) { |t| t.upcase }
+        t.column(:upcase) { |e| e.upcase }
       end)
     end
 

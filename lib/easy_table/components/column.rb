@@ -7,8 +7,8 @@ module EasyTable
 
       def initialize(node, title, label, opts, template, block)
         @node, @title, @label, @template, @block, @opts = node, title, label, template, block, opts
-        header_opts = @opts.select { |k, v| k =~ /^header_.*/ }
-        header_opts.each { |k, v| @opts.delete(k) }
+        header_opts = @opts.select { |k, _v| k =~ /^header_.*/ }
+        header_opts.each { |k, _v| @opts.delete(k) }
         @header_opts = header_opts.inject({}) do |h, e|
           k, v = *e
           h[k[7..-1]] = v
