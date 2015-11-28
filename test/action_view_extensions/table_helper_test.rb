@@ -31,7 +31,7 @@ class TableHelperTest < ActionView::TestCase
 
     should "have proper headers" do
       headers = css_select 'table thead tr th'
-      assert_equal '<th>downcase</th>', headers[0].to_s
+      assert_equal '<th>downcase</th>', headers[0].to_s.strip
       assert_equal '<th>upcase</th>', headers[1].to_s
     end
   end
@@ -76,22 +76,22 @@ class TableHelperTest < ActionView::TestCase
 
     should "have proper td class in name column" do
       td = css_select('table tbody tr:first-child td:first-child').first
-      assert_equal 'name', td.attributes['class']
+      assert_equal 'name', td.attributes['class'].value
     end
 
     should "have proper th class in name column" do
       td = css_select('table thead tr:nth-child(2) th:first-child').first
-      assert_equal 'name_head', td.attributes['class']
+      assert_equal 'name_head', td.attributes['class'].value
     end
 
     should "have proper td class in first row in email column" do
       td = css_select('table tbody tr:nth-child(1) td:nth-child(3)').first
-      assert_equal 'foo bar gmail', td.attributes['class']
+      assert_equal 'foo bar gmail', td.attributes['class'].value
     end
 
     should "have proper td class in second row in email column" do
       td = css_select('table tbody tr:nth-child(2) td:nth-child(3)').first
-      assert_equal 'foo bar', td.attributes['class']
+      assert_equal 'foo bar', td.attributes['class'].value
     end
   end
 
@@ -125,7 +125,7 @@ class TableHelperTest < ActionView::TestCase
 
     should "have rowspan=3 in last th of first tr" do
       th = css_select('table thead tr:first-child th:last-child').first
-      assert_equal '3', th.attributes['rowspan']
+      assert_equal '3', th.attributes['rowspan'].value
     end
 
     should "have 11 th elements in thead" do
