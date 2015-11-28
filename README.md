@@ -19,7 +19,9 @@ And then execute:
 
 ## Usage
 
-All examples assume that You are using Haml. Please, use Haml !
+For a working Rails 4.2 sample code see: [cthulhu666/easy_table_sample](https://github.com/cthulhu666/easy_table_sample/tree/rails_4_2)
+
+All examples below assume that You are using Haml. Please, use Haml !
 
 ### Simplest example
 
