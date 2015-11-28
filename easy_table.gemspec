@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = EasyTable::VERSION
 
-  gem.add_dependency 'activemodel', '~> 4.0'
-  gem.add_dependency 'actionpack', '~> 4.0'
+  gem.add_dependency 'activemodel', '~> 4.2'
+  gem.add_dependency 'actionpack', '~> 4.2'
   gem.add_dependency 'rubytree', '~> 0.8.3'
 end
