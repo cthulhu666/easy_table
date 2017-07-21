@@ -4,8 +4,8 @@ require File.expand_path('../lib/easy_table/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jakub Głuszecki"]
   gem.email         = ["jakub.gluszecki@gmail.com"]
-  gem.description   = "HTML tables made easy (in Rails 4)"
-  gem.summary       = "HTML tables made easy (in Rails 4)"
+  gem.description   = "HTML tables made easy (in Rails 4 & 5)"
+  gem.summary       = "HTML tables made easy (in Rails 4 & 5)"
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = EasyTable::VERSION
 
-  gem.add_dependency 'activemodel', '~> 4.2'
-  gem.add_dependency 'actionpack', '~> 4.2'
+  gem.add_dependency 'activemodel', '> 4.2'
+  gem.add_dependency 'actionpack', '> 4.2'
   gem.add_dependency 'rubytree', '~> 0.8.3'
 end
