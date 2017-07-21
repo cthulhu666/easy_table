@@ -2,3 +2,10 @@ machine:
   ruby:
     version: 2.2.2
 
+dependencies:
+  post:
+    - bundle exec appraisal install
+
+test:
+  override:
+    - bundle exec appraisal rake test
