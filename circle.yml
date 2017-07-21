@@ -1,4 +1,11 @@
 machine:
   ruby:
-    version: 2.2.2
+    version: 2.3.4
 
+dependencies:
+  post:
+    - bundle exec appraisal install
+
+test:
+  override:
+    - bundle exec appraisal rake test
