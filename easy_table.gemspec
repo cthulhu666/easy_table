@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activemodel', '> 4.2'
   gem.add_dependency 'actionpack', '> 4.2'
-  gem.add_dependency 'rubytree', '~> 0.8.3'
+  gem.add_dependency 'rubytree', '~> 1.0'
 
   gem.add_development_dependency "appraisal"
 end
