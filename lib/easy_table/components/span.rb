@@ -6,11 +6,16 @@ module EasyTable
       include Spans
 
       def initialize(node, title, label, html_opts, template, block)
-        @node, @title, @label, @template, @block, @html_opts = node, title, label, template, block, html_opts
+        @node = node
+        @title = title
+        @label = label
+        @template = template
+        @block = block
+        @html_opts = html_opts
         block.call(self)
       end
 
-      delegate :tag, :content_tag, :to => :@template
+      delegate :tag, :content_tag, to: :@template
 
       def head
         opts = @html_opts.merge(colspan: colspan, scope: 'col')
@@ -36,9 +41,8 @@ module EasyTable
 
       def concat(tag)
         @template.safe_concat(tag)
-        ""
+        ''
       end
-
     end
   end
 end
