@@ -1,10 +1,9 @@
 module EasyTable
   class TableBuilder
-
     include EasyTable::Components::Columns
     include EasyTable::Components::Spans
 
-    delegate :tag, :content_tag, :to => :@template
+    delegate :tag, :content_tag, to: :@template
 
     def initialize(collection, template, options)
       @collection = collection
@@ -49,11 +48,9 @@ module EasyTable
       rows.shift
       rows.each do |row|
         concat(
-            content_tag(:tr) do
-              row.map { |node| node.content }.each do |span_or_column|
-                span_or_column.head
-              end
-            end
+          content_tag(:tr) do
+            row.map(&:content).each(&:head)
+          end
         )
       end
     end
@@ -62,24 +59,24 @@ module EasyTable
       tr_opts = @tr_opts.inject({}) do |h, e|
         k, v = *e
         h[k] = case v
-                 when Proc
-                   v.call(record)
-                 else
-                   v
+               when Proc
+                 v.call(record)
+               else
+                 v
                end
         h
       end
 
-      id =  "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
-      id ||=  "#{record.class.name.to_s.parameterize}-#{record.id}" if record.respond_to?(:id)
+      id = "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
+      id ||= "#{record.class.name.to_s.parameterize}-#{record.id}" if record.respond_to?(:id)
 
       id.present? ?
-          tr_opts.merge({id: id}) : tr_opts
+          tr_opts.merge(id: id) : tr_opts
     end
 
     def concat(tag)
       @template.safe_concat(tag)
-      ""
+      ''
     end
 
     def options_from_hash(args)

@@ -1,4 +1,4 @@
-require "easy_table/version"
+require 'easy_table/version'
 
 require 'action_view'
 require 'easy_table/action_view_extensions/table_helper'
@@ -11,5 +11,4 @@ require 'easy_table/table_builder'
 require 'tree'
 
 module EasyTable
-
 end

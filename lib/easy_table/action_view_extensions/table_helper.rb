@@ -7,7 +7,6 @@ module EasyTable
         t.build
       end
     end
-
   end
 end
 

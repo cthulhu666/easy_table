@@ -3,10 +3,15 @@ module EasyTable
     class Column
       include Base
 
-      delegate :tag, :capture, :content_tag, :to => :@template
+      delegate :tag, :capture, :content_tag, to: :@template
 
       def initialize(node, title, label, opts, template, block)
-        @node, @title, @label, @template, @block, @opts = node, title, label, template, block, opts
+        @node = node
+        @title = title
+        @label = label
+        @template = template
+        @block = block
+        @opts = opts
         header_opts = @opts.select { |k, _v| k =~ /^header_.*/ }
         header_opts.each { |k, _v| @opts.delete(k) }
         @header_opts = header_opts.inject({}) do |h, e|
@@ -21,11 +26,11 @@ module EasyTable
       end
 
       def td(record)
-        if @block.present?
-          html = capture { @block.call(record, self) }
-        else
-          html = record.send(@title).to_s
-        end
+        html = if @block.present?
+                 capture { @block.call(record, self) }
+               else
+                 record.send(@title).to_s
+               end
         concat(content_tag(:td, html, html_opts(record)))
       end
 
@@ -37,17 +42,17 @@ module EasyTable
 
       def concat(tag)
         @template.safe_concat(tag) unless tag.nil?
-        ""
+        ''
       end
 
       def html_opts(record)
         @opts.inject({}) do |h, e|
           k, v = *e
           h[k] = case v
-                   when Proc
-                     v.call(record)
-                   else
-                     v
+                 when Proc
+                   v.call(record)
+                 else
+                   v
                  end
           h
         end

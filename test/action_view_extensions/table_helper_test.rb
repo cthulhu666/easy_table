@@ -1,8 +1,4 @@
-if __FILE__== $0
-  require '../test_helper'
-else
-  require 'test_helper'
-end
+require 'test_helper'
 
 class TableHelperTest < ActionView::TestCase
 
