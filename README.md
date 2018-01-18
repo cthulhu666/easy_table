@@ -1,5 +1,6 @@
 # EasyTable
 
+[![Gem Version](https://badge.fury.io/rb/easy_table.svg)](https://badge.fury.io/rb/easy_table)
 [![Build Status](https://travis-ci.org/cthulhu666/easy_table.png?branch=master)](https://travis-ci.org/cthulhu666/easy_table)
 [![endorse](https://api.coderwall.com/cthulhu666/endorsecount.png)](https://coderwall.com/cthulhu666)
 
