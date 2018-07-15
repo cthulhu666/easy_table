@@ -6,9 +6,9 @@ class TableHelperTest < ActionView::TestCase
       @collection = %w[foo bar buzz]
       concat(table_for(@collection, class: 'easy', tr_class: 'fun',
                                     tr_foo: ->(e) { e.length > 3 }) do |t|
-        t.column :downcase
-        t.column(:upcase) { |e| e.upcase } # rubocop:disable Style/SymbolProc
-      end)
+               t.column :downcase
+               t.column(:upcase) { |e| e.upcase } # rubocop:disable Style/SymbolProc
+             end)
     end
 
     should "have 'easy' class" do
