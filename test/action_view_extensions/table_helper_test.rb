@@ -4,7 +4,8 @@ class TableHelperTest < ActionView::TestCase
   context 'a table' do
     setup do
       @collection = %w[foo bar buzz]
-      concat(table_for(@collection, class: 'easy', tr_class: 'fun') do |t|
+      concat(table_for(@collection, class: 'easy', tr_class: 'fun',
+                                    tr_foo: ->(e) { e.length > 3 }) do |t|
         t.column :downcase
         t.column(:upcase) { |e| e.upcase } # rubocop:disable Style/SymbolProc
       end)

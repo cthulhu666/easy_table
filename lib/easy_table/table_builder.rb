@@ -5,6 +5,21 @@ module EasyTable
 
     delegate :tag, :content_tag, to: :@template
 
+    # NOTE: old versions of ActiveSupport don't have `transform_values!`
+    unless Hash.method_defined? :transform_values!
+      module M
+        refine Hash do
+          def transform_values!
+            return enum_for(:transform_values!) unless block_given?
+            each do |key, value|
+              self[key] = yield(value)
+            end
+          end
+        end
+      end
+      using M
+    end
+
     def initialize(collection, template, options)
       @collection = collection
       @options, @tr_opts = parse_options(options)
@@ -52,21 +67,20 @@ module EasyTable
     end
 
     def tr_opts(record)
-      tr_opts = @tr_opts.each_with_object({}) do |e, h|
-        k, v = *e
-        h[k] = case v
-               when Proc
-                 v.call(record)
-               else
-                 v
-               end
-      end
+      tr_opts = eval_procs(@tr_opts, record)
 
       id = "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
       id ||= "#{record.class.name.to_s.parameterize}-#{record.id}" if record.respond_to?(:id)
 
-      id.present? ?
-          tr_opts.merge(id: id) : tr_opts
+      id.present? ? tr_opts.merge(id: id) : tr_opts
+    end
+
+    def eval_procs(h, record)
+      return h if h.empty?
+      procs = h.select { |_k, v| v.is_a?(Proc) }
+               .transform_values! { |v| v.call(record) }
+      return h if procs.empty?
+      h.merge(procs)
     end
 
     def concat(tag)
