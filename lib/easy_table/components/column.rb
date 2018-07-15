@@ -14,10 +14,9 @@ module EasyTable
         @opts = opts
         header_opts = @opts.select { |k, _v| k =~ /^header_.*/ }
         header_opts.each { |k, _v| @opts.delete(k) }
-        @header_opts = header_opts.inject({}) do |h, e|
+        @header_opts = header_opts.each_with_object({}) do |e, h|
           k, v = *e
           h[k[7..-1]] = v
-          h
         end
       end
 
@@ -46,7 +45,7 @@ module EasyTable
       end
 
       def html_opts(record)
-        @opts.inject({}) do |h, e|
+        @opts.each_with_object({}) do |e, h|
           k, v = *e
           h[k] = case v
                  when Proc
@@ -54,7 +53,6 @@ module EasyTable
                  else
                    v
                  end
-          h
         end
       end
     end

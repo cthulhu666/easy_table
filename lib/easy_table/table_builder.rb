@@ -33,14 +33,13 @@ module EasyTable
 
     def parse_options(options)
       tr_opts = options.select { |k, _v| k =~ /^tr_.*/ }
-      return options.except(*tr_opts.keys), tr_opts.transform_keys { |k| k[3..-1] }
+      [options.except(*tr_opts.keys), tr_opts.transform_keys { |k| k[3..-1] }]
     end
 
     def thead
-      rows = node.inject([]) do |arr, n|
+      rows = node.each_with_object([]) do |n, arr|
         arr[n.level] ||= []
         arr[n.level] << n
-        arr
       end
       rows.shift
       rows.each do |row|
@@ -53,7 +52,7 @@ module EasyTable
     end
 
     def tr_opts(record)
-      tr_opts = @tr_opts.inject({}) do |h, e|
+      tr_opts = @tr_opts.each_with_object({}) do |e, h|
         k, v = *e
         h[k] = case v
                when Proc
@@ -61,7 +60,6 @@ module EasyTable
                else
                  v
                end
-        h
       end
 
       id = "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
