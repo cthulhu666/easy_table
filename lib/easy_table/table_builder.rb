@@ -7,15 +7,7 @@ module EasyTable
 
     def initialize(collection, template, options)
       @collection = collection
-      @options = options
-      tr_opts = @options.select { |k, _v| k =~ /^tr_.*/ }
-      tr_opts.each { |k, _v| @options.delete(k) }
-      @tr_opts = tr_opts.inject({}) do |h, e|
-        k, v = *e
-        h[k[3..-1]] = v
-        h
-      end
-
+      @options, @tr_opts = parse_options(options)
       @template = template
       @node = Tree::TreeNode.new('root')
     end
@@ -38,6 +30,11 @@ module EasyTable
     end
 
     private
+
+    def parse_options(options)
+      tr_opts = options.select { |k, _v| k =~ /^tr_.*/ }
+      return options.except(*tr_opts.keys), tr_opts.transform_keys { |k| k[3..-1] }
+    end
 
     def thead
       rows = node.inject([]) do |arr, n|
@@ -77,10 +74,6 @@ module EasyTable
     def concat(tag)
       @template.safe_concat(tag)
       ''
-    end
-
-    def options_from_hash(args)
-      args.last.is_a?(Hash) ? args.pop : {}
     end
   end
 end

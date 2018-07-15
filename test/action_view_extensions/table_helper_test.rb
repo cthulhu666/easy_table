@@ -5,7 +5,7 @@ class TableHelperTest < ActionView::TestCase
   context "a table" do
     setup do
       @collection = ['foo', 'bar', 'buzz']
-      concat(table_for(@collection, class: 'easy') do |t|
+      concat(table_for(@collection, class: 'easy', tr_class: 'fun') do |t|
         t.column :downcase
         t.column(:upcase) { |e| e.upcase }
       end)
@@ -17,6 +17,11 @@ class TableHelperTest < ActionView::TestCase
 
     should "have 3 rows" do
       rows = css_select 'table tbody tr'
+      assert_equal 3, rows.size
+    end
+
+    should "have rows with 'fun' class" do
+      rows = css_select 'table tbody tr.fun'
       assert_equal 3, rows.size
     end
 
