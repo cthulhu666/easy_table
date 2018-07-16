@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    easy_table (0.0.9)
+    easy_table (0.0.10)
       actionpack (> 4.2)
       activemodel (> 4.2)
       rubytree (~> 1.0)

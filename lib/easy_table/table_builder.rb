@@ -5,17 +5,24 @@ module EasyTable
 
     delegate :tag, :content_tag, to: :@template
 
+    # NOTE: old versions of ActiveSupport don't have `transform_values!`
+    unless Hash.method_defined? :transform_values!
+      module M
+        refine Hash do
+          def transform_values!
+            return enum_for(:transform_values!) unless block_given?
+            each do |key, value|
+              self[key] = yield(value)
+            end
+          end
+        end
+      end
+      using M
+    end
+
     def initialize(collection, template, options)
       @collection = collection
-      @options = options
-      tr_opts = @options.select { |k, _v| k =~ /^tr_.*/ }
-      tr_opts.each { |k, _v| @options.delete(k) }
-      @tr_opts = tr_opts.inject({}) do |h, e|
-        k, v = *e
-        h[k[3..-1]] = v
-        h
-      end
-
+      @options, @tr_opts = parse_options(options)
       @template = template
       @node = Tree::TreeNode.new('root')
     end
@@ -39,11 +46,15 @@ module EasyTable
 
     private
 
+    def parse_options(options)
+      tr_opts = options.select { |k, _v| k =~ /^tr_.*/ }
+      [options.except(*tr_opts.keys), tr_opts.transform_keys { |k| k[3..-1] }]
+    end
+
     def thead
-      rows = node.inject([]) do |arr, n|
+      rows = node.each_with_object([]) do |n, arr|
         arr[n.level] ||= []
         arr[n.level] << n
-        arr
       end
       rows.shift
       rows.each do |row|
@@ -56,31 +67,25 @@ module EasyTable
     end
 
     def tr_opts(record)
-      tr_opts = @tr_opts.inject({}) do |h, e|
-        k, v = *e
-        h[k] = case v
-               when Proc
-                 v.call(record)
-               else
-                 v
-               end
-        h
-      end
+      tr_opts = eval_procs(@tr_opts, record)
 
       id = "#{record.class.model_name.to_s.parameterize}-#{record.to_param}" if record.class.respond_to?(:model_name)
       id ||= "#{record.class.name.to_s.parameterize}-#{record.id}" if record.respond_to?(:id)
 
-      id.present? ?
-          tr_opts.merge(id: id) : tr_opts
+      id.present? ? tr_opts.merge(id: id) : tr_opts
+    end
+
+    def eval_procs(h, record)
+      return h if h.empty?
+      procs = h.select { |_k, v| v.is_a?(Proc) }
+               .transform_values! { |v| v.call(record) }
+      return h if procs.empty?
+      h.merge(procs)
     end
 
     def concat(tag)
       @template.safe_concat(tag)
       ''
-    end
-
-    def options_from_hash(args)
-      args.last.is_a?(Hash) ? args.pop : {}
     end
   end
 end
