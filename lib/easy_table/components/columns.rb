@@ -10,6 +10,11 @@ module EasyTable
           opts = opts
         end
         child = node << Tree::TreeNode.new(title)
+
+        if @collection.first.class.respond_to?(:human_attribute_name)
+          opts[:_title_human_attribute_name] ||= @collection.first.class.human_attribute_name(title)
+        end
+
         column = Column.new(child, title, label, opts, @template, block)
         child.content = column
       end
