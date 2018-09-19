@@ -11,7 +11,7 @@ module EasyTable
         end
         child = node << Tree::TreeNode.new(title)
 
-        if @collection.first.class.respond_to?(:human_attribute_name)
+        if @collection&.first&.class&.respond_to?(:human_attribute_name)
           opts[:_title_human_attribute_name] ||= @collection.first.class.human_attribute_name(title)
         end
 
